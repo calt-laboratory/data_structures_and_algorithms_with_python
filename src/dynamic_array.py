@@ -12,14 +12,23 @@ class DynamicArray:
 
     def __getitem__(self, idx: int) -> Any:
         if not 0 <= idx < self._current_number_of_elements:
-            return IndexError(f"Index {idx} does not lie inside the array size of {self._current_number_of_elements}")
+            raise IndexError(f"Index {idx} does not lie inside the array size of {self._current_number_of_elements}")
         return self._array[idx]
 
     def append(self, new_element: Any) -> list:
+        """Appends a new element at the end of the array."""
         if self._current_number_of_elements == self._array_capacity:
-            self._resize_array(new_capacity=2 * self._array_capacity)
+            new_capacity = 2 * self._array_capacity
+            self._resize_array(new_capacity=new_capacity)
         self._array[self._current_number_of_elements] = new_element
         self._current_number_of_elements += 1
+
+    def pop(self) -> None:
+        """Pops the last element of the array."""
+        if self._current_number_of_elements == 0:
+            print("The array is empty.")
+        self._array[self._current_number_of_elements - 1] = None
+        self._current_number_of_elements -= 1
 
     @staticmethod
     def _create_array(array_capacity: int) -> list:
@@ -40,8 +49,10 @@ def main() -> None:
     print(dynamic_array[0])
     print(dynamic_array[1])
     print(len(dynamic_array))
+    dynamic_array.pop()
+    print(len(dynamic_array))
+    print(dynamic_array[1])
 
 
 if __name__ == "__main__":
     main()
-
