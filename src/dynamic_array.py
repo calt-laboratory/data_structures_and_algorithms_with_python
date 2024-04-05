@@ -8,9 +8,11 @@ class DynamicArray:
         self._array = self._create_array(array_capacity=self._array_capacity)
 
     def __len__(self) -> int:
+        """Returns length of the array."""
         return self._current_number_of_elements
 
     def __getitem__(self, idx: int) -> Any:
+        """Returns element at a given index."""
         if not 0 <= idx < self._current_number_of_elements:
             raise IndexError(f"Index {idx} does not lie inside the array size of {self._current_number_of_elements}")
         return self._array[idx]
@@ -20,6 +22,7 @@ class DynamicArray:
         if self._current_number_of_elements == self._array_capacity:
             new_capacity = 2 * self._array_capacity
             self._resize_array(new_capacity=new_capacity)
+
         self._array[self._current_number_of_elements] = new_element
         self._current_number_of_elements += 1
 
@@ -27,17 +30,22 @@ class DynamicArray:
         """Pops the last element of the array."""
         if self._current_number_of_elements == 0:
             print("The array is empty.")
+
         self._array[self._current_number_of_elements - 1] = None
         self._current_number_of_elements -= 1
 
     @staticmethod
     def _create_array(array_capacity: int) -> list:
+        """Creates an array of given capacity (populated with None)."""
         return [None] * array_capacity
 
     def _resize_array(self, new_capacity: int) -> None:
+        """Resizes the array to a given capacity."""
         new_array = self._create_array(array_capacity=new_capacity)
+
         for i in range(self._current_number_of_elements):
             new_array[i] = self._array[i]
+
         self._array = new_array
         self._array_capacity = new_capacity
 
