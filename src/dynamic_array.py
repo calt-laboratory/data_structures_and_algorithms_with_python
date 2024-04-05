@@ -51,7 +51,15 @@ class DynamicArray:
         
     def delete_at(self, idx: int) -> None:
         """Deletes an item at a given index and move the subsequent items to the left."""
-        ...
+        if not 0 <= idx < self._n_items:
+            raise IndexError(f"Index {idx} does not lie inside the array size of {self._n_items}")
+
+        self._array[idx] = None
+        for i in range(idx + 1, self._n_items + 1):
+            self._array[i - 1] = self._array[i]
+
+        self._n_items -= 1
+        print(f"Array: {self._array}")
 
     @staticmethod
     def _create_array(array_capacity: int) -> list:
@@ -76,8 +84,11 @@ def main() -> None:
     dynamic_array.append(new_element=11)
     dynamic_array.append(new_element=22)
     dynamic_array.append(new_element=77)
-    dynamic_array.insert_at(idx=2, new_element=111)
+    dynamic_array.insert_at(idx=2, new_element=42)
     dynamic_array.pop()
+    dynamic_array.append(new_element=100)
+    dynamic_array.append(new_element=55)
+    dynamic_array.delete_at(idx=3)
 
 
 if __name__ == "__main__":
