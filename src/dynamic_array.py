@@ -14,7 +14,7 @@ class DynamicArray:
             raise IndexError(f"Index {idx} does not lie inside the array size of {self._n_items}")
         return self._array[idx]
 
-    def append(self, new_item: int) -> list:
+    def append(self, new_item: int) -> None:
         """Appends a new element at the end of the array."""
         if self._n_items == self._array_capacity:
             new_capacity = 2 * self._array_capacity
@@ -51,7 +51,7 @@ class DynamicArray:
         self._array[idx] = new_item
         self._n_items += 1
         print(f"Array: {self._array}")
-        
+
     def delete_at(self, idx: int) -> None:
         """Deletes an item at a given index and move the subsequent items to the left."""
         if not 0 <= idx < self._n_items:
