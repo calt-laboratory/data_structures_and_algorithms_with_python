@@ -1,4 +1,4 @@
-class DynamicArray:
+class DynamicArray[T]:
     def __init__(self) -> None:
         self._n_items = 0  # current number of items in the array
         self._array_capacity = 1
@@ -8,13 +8,13 @@ class DynamicArray:
         """Returns length of the array."""
         return self._n_items
 
-    def __getitem__(self, idx: int) -> int:
+    def __getitem__(self, idx: int) -> T:
         """Returns element at a given index."""
         if not 0 <= idx < self._n_items:
             raise IndexError(f"Index {idx} does not lie inside the array size of {self._n_items}")
         return self._array[idx]
 
-    def append(self, new_item: int) -> None:
+    def append(self, new_item: T) -> None:
         """Appends a new element at the end of the array."""
         if self._n_items == self._array_capacity:
             new_capacity = 2 * self._array_capacity
@@ -36,7 +36,7 @@ class DynamicArray:
         if self._n_items == self._array_capacity // 2:
             self._resize_array(new_capacity=self._array_capacity // 2)
 
-    def insert_at(self, idx: int, new_item: int) -> None:
+    def insert_at(self, idx: int, new_item: T) -> None:
         """Inserts a new element at a given index and moves the subsequent elements to the right."""
         if not 0 <= idx < self._n_items:
             raise IndexError(f"Index {idx} does not lie inside the array size of {self._n_items}")
@@ -67,7 +67,7 @@ class DynamicArray:
             self._resize_array(new_capacity=self._array_capacity // 2)
 
     @staticmethod
-    def _create_array(array_capacity: int) -> list:
+    def _create_array(array_capacity: int) -> list[T]:
         """Creates an array of given capacity (populated with None)."""
         return [None] * array_capacity
 
@@ -84,7 +84,7 @@ class DynamicArray:
 
 
 def main() -> None:
-    dynamic_array = DynamicArray()
+    dynamic_array = DynamicArray[int]()
     dynamic_array.append(new_item=32)
     dynamic_array.append(new_item=11)
     dynamic_array.append(new_item=22)
