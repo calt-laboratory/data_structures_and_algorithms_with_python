@@ -1,10 +1,10 @@
-from typing import Any, Type
+from typing import Any, Optional, Type
 
 
 class HashMap:
     def __init__(self, size: int) -> None:
         self.size = size
-        self.hash_map = [(None, ) for _ in range(self.size)]
+        self.hash_map = [[None, None] for _ in range(self.size)]
 
     def _hash_function(self, key: int) -> int:
         return key % self.size
@@ -14,30 +14,48 @@ class HashMap:
         idx = self._hash_function(key=key)
 
         if self.hash_map[idx][0] is None:
-            self.hash_map[idx] = (key, value)
+            self.hash_map[idx] = [key, value]
             return
 
         # Loop through map if there is already a key at position idx
         if self.hash_map[idx][0] != key:
-            for i, pair in enumerate(self.hash_map[idx + 1:], start=idx + 1):
+            for i, pair in enumerate(self.hash_map[idx + 1 :], start=idx + 1):
                 if pair[0] is None:
-                    self.hash_map[i] = (key, value)
+                    self.hash_map[i] = [key, value]
                     return
         return
 
     def get(self, key: int) -> Type[KeyError] | Any:
-
         idx = self._hash_function(key=key)
 
         if key == self.hash_map[idx][0]:
             return self.hash_map[idx][1]
 
-        if key is None:
+        if self.hash_map[idx][0] is None:
             return KeyError
 
-        for pair in self.hash_map[idx + 1:]:
+        for pair in self.hash_map[idx + 1 :]:
             if key == pair[0]:
                 return pair[1]
+
+        return None
+
+    def delete(self, key: int) -> Optional[Type[KeyError]]:
+        idx = self._hash_function(key=key)
+
+        if key == self.hash_map[idx][0]:
+            self.hash_map[idx] = [None, None]
+            return None
+
+        if self.hash_map[idx][0] is None:
+            return KeyError
+
+        for i, pair in enumerate(self.hash_map[idx + 1 :], start=idx + 1):
+            if pair[0] != key:
+                continue
+            self.hash_map[i] = [None, None]
+
+        return None
 
     def __str__(self) -> str:
         return str([item for item in self.hash_map])
@@ -63,6 +81,10 @@ def main() -> None:
     print(hash_map.get(key=24))
     print(hash_map.get(key=42))
     print(hash_map.get(key=11111))
+    print(hash_map.delete(key=12))
+    print(hash_map)
+    print(hash_map.delete(key=22))
+    print(hash_map)
 
 
 if __name__ == "__main__":
