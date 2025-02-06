@@ -1,11 +1,10 @@
-from typing import Optional
+from typing import Any, Type
 
 
 class HashMap:
     def __init__(self, size: int) -> None:
         self.size = size
         self.hash_map = [(None, ) for _ in range(self.size)]
-
 
     def _hash_function(self, key: int) -> int:
         return key % self.size
@@ -16,28 +15,29 @@ class HashMap:
 
         if self.hash_map[idx][0] is None:
             self.hash_map[idx] = (key, value)
-            return None
+            return
 
+        # Loop through map if there is already a key at position idx
         if self.hash_map[idx][0] != key:
             for i, pair in enumerate(self.hash_map[idx + 1:], start=idx + 1):
                 if pair[0] is None:
                     self.hash_map[i] = (key, value)
-                    return None
+                    return
+        return
 
-        return None
-
-    def get(self, key: int) -> Optional[int | float | str]:
+    def get(self, key: int) -> Type[KeyError] | Any:
 
         idx = self._hash_function(key=key)
 
         if key == self.hash_map[idx][0]:
             return self.hash_map[idx][1]
-        else:
-            for pair in self.hash_map[idx + 1:]:
-                if key == pair[0]:
-                    return pair[1]
 
-        raise KeyError
+        if key is None:
+            return KeyError
+
+        for pair in self.hash_map[idx + 1:]:
+            if key == pair[0]:
+                return pair[1]
 
     def __str__(self) -> str:
         return str([item for item in self.hash_map])
